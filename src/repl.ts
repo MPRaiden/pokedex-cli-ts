@@ -1,11 +1,12 @@
 import { createInterface } from "readline"
+import { getCommands } from "./helpers.js"
 
 export function cleanInput(input: string): Array<string> {
 	return input.trim().toLowerCase().split(" ").filter((word) => word !== "")
 }
 
 
-const readInput = createInterface(
+export const readInput = createInterface(
 	{
 		input: process.stdin,
 		output: process.stdout,
@@ -14,6 +15,8 @@ const readInput = createInterface(
 )
 
 export function startREPL() {
+	const commands = getCommands()
+
 	readInput.prompt()
 	readInput.on("line", (input) => {
 		const cleanedInput = cleanInput(input)
@@ -21,8 +24,12 @@ export function startREPL() {
 		if (!cleanedInput.length) {
 			readInput.prompt()
 		} else {
-			console.log(`Your command was: ${cleanedInput[0]}`)
-			readInput.prompt()
+			if (Object.keys(commands).includes(cleanedInput[0])) {
+				commands[cleanedInput[0]].callback(commands)
+			} else {
+				console.log("Unknown command\n")
+				readInput.prompt()
+			}
 		}
 	})
 }
