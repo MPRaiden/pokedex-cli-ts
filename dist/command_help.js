@@ -1,9 +1,8 @@
-import { readInput } from "./repl.js";
-export function commandHelp(commands) {
+export function commandHelp(state) {
     console.log("Welcome to the Pokedex!\n");
     console.log("Usage:\n\n");
-    for (const callback of Object.values(commands)) {
+    for (const callback of Object.values(state.commands)) {
         console.log(`${callback.name}: ${callback.description}\n`);
-        readInput.prompt();
     }
+    state.readline.prompt();
 }

@@ -1,13 +1,13 @@
-import { CLICommand } from "./types.js";
-import { readInput } from "./repl.js";
+import { State } from "./state.js"
 
-export function commandHelp(commands: Record<string, CLICommand>) {
+export function commandHelp(state: State) {
 	console.log("Welcome to the Pokedex!\n")
 	console.log("Usage:\n\n")
 
-	for (const callback of Object.values(commands)) {
+	for (const callback of Object.values(state.commands)) {
 		console.log(`${callback.name}: ${callback.description}\n`)
-		readInput.prompt()
 	}
+
+	state.readline.prompt()
 }
 
