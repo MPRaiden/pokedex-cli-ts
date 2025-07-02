@@ -4,7 +4,7 @@ export function cleanInput(input: string): Array<string> {
 	return input.trim().toLowerCase().split(" ").filter((word) => word !== "")
 }
 
-export function startREPL(state: State) {
+export async function startREPL(state: State) {
 	const commands = state.commands
 
 	state.readline.prompt()

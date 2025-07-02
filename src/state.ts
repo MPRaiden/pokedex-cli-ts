@@ -1,16 +1,22 @@
 import { createInterface, type Interface } from "readline";
-import { commandExit } from "./command_exit.js";
+import { commandExit, } from "./command_exit.js";
+import { commandMap } from "./command_map.js";
 import { commandHelp } from "./command_help.js";
+import { PokeAPI } from "./pokeapi.js";
+import { commandMapB } from "./command_mapb.js";
 
 export type State = {
 	readline: Interface,
 	commands: { [command: string]: CLICommand }
+	pokeapi: PokeAPI
+	nextLocationsURL: string
+	prevLocationsURL: string | null
 }
 
 export type CLICommand = {
 	name: string;
 	description: string;
-	callback: (state: State) => void;
+	callback: (state: State) => Promise<void>
 }
 
 export function initState() {
@@ -33,11 +39,24 @@ export function initState() {
 			description: "Displays help information",
 			callback: commandHelp,
 		},
+		map: {
+			name: "map",
+			description: "Displays next locations results",
+			callback: commandMap,
+		},
+		mapb: {
+			name: "mapb",
+			description: "Displays previous locations results",
+			callback: commandMapB,
+		},
 	}
 
 	const state: State = {
 		readline: readInput,
-		commands: registry
+		commands: registry,
+		pokeapi: new PokeAPI(),
+		nextLocationsURL: "https://pokeapi.co/api/v2/location-area",
+		prevLocationsURL: null
 	}
 
 	return state

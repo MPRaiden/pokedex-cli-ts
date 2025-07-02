@@ -1,7 +1,7 @@
 export function cleanInput(input) {
     return input.trim().toLowerCase().split(" ").filter((word) => word !== "");
 }
-export function startREPL(state) {
+export async function startREPL(state) {
     const commands = state.commands;
     state.readline.prompt();
     state.readline.on("line", (input) => {
