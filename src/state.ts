@@ -4,6 +4,7 @@ import { commandMap } from "./command_map.js";
 import { commandHelp } from "./command_help.js";
 import { PokeAPI } from "./pokeapi.js";
 import { commandMapB } from "./command_mapb.js";
+import { Cache } from "./pokecache.js";
 
 export type State = {
 	readline: Interface,
@@ -51,10 +52,12 @@ export function initState() {
 		},
 	}
 
+	const cache = new Cache(10000)
+
 	const state: State = {
 		readline: readInput,
 		commands: registry,
-		pokeapi: new PokeAPI(),
+		pokeapi: new PokeAPI(cache),
 		nextLocationsURL: "https://pokeapi.co/api/v2/location-area",
 		prevLocationsURL: null
 	}

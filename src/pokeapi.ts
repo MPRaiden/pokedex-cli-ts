@@ -1,19 +1,36 @@
+import { Cache } from './pokecache.js'
+
 export class PokeAPI {
 	private static readonly baseURL = "https://pokeapi.co/api/v2";
+	private cache: Cache
 
-	constructor() { }
+	constructor(cache: Cache) {
+		this.cache = cache
+	}
 
 	async fetchLocations(pageURL?: string): Promise<ShallowLocations> {
-
 		try {
+			const url = pageURL ?? PokeAPI.baseURL + "/location-area"
 
-			const response = pageURL !== undefined ? await fetch(pageURL) : await fetch(PokeAPI.baseURL + "location-area")
-
-			if (!response.ok) {
-				throw new Error(`function fetchLocations() response not ok, response.text - ${response.text}`)
+			// Check for cached results first
+			const cached = this.cache.get<ShallowLocations>(url)
+			if (cached) {
+				return cached
 			}
 
-			return await response.json()
+			// If not send request and cache results
+			const response = await fetch(url)
+
+			if (!response.ok) {
+				throw new Error(`function fetchLocations() response not ok, response.text - ${response}`)
+			}
+
+			const data = await response.json()
+
+			// Add to cache
+			this.cache.add(url, data)
+
+			return data
 		} catch (error) {
 			throw new Error(`function fetchLocations() response not ok, error - ${error}`)
 		}
@@ -21,13 +38,27 @@ export class PokeAPI {
 
 	async fetchLocation(locationName: string): Promise<LocationInfo> {
 		try {
-			const response = await fetch(PokeAPI.baseURL + "location-area/" + locationName)
+			const url = PokeAPI.baseURL + "/location-area/" + locationName
 
-			if (!response.ok) {
-				throw new Error(`function fetchLocation() response not ok, response.text - ${response.text}`)
+			// Check for cached results
+			const cached = this.cache.get<LocationInfo>(url)
+			if (cached) {
+				return cached
 			}
 
-			return await response.json()
+			// Else send request to API
+			const response = await fetch(url)
+
+			if (!response.ok) {
+				throw new Error(`function fetchLocation() response not ok, response.text - ${response}`)
+			}
+
+			const data = await response.json()
+
+			// Cache new results
+			this.cache.add(url, data)
+
+			return data
 		} catch (error) {
 
 			throw new Error(`function fetchLocation() response not ok, error - ${error}`)
