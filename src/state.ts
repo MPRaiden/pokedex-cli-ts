@@ -5,6 +5,7 @@ import { commandHelp } from "./command_help.js";
 import { PokeAPI } from "./pokeapi.js";
 import { commandMapB } from "./command_mapb.js";
 import { Cache } from "./pokecache.js";
+import { commandExplore } from "./command_explore.js";
 
 export type State = {
 	readline: Interface,
@@ -12,12 +13,13 @@ export type State = {
 	pokeapi: PokeAPI
 	nextLocationsURL: string
 	prevLocationsURL: string | null
+	location: string | null
 }
 
 export type CLICommand = {
 	name: string;
 	description: string;
-	callback: (state: State) => Promise<void>
+	callback: (state: State, ...args: Array<string>) => Promise<void>
 }
 
 export function initState() {
@@ -50,6 +52,11 @@ export function initState() {
 			description: "Displays previous locations results",
 			callback: commandMapB,
 		},
+		explore: {
+			name: "explore",
+			description: "Explores the pokemon of a location",
+			callback: commandExplore,
+		},
 	}
 
 	const cache = new Cache(10000)
@@ -59,7 +66,8 @@ export function initState() {
 		commands: registry,
 		pokeapi: new PokeAPI(cache),
 		nextLocationsURL: "https://pokeapi.co/api/v2/location-area",
-		prevLocationsURL: null
+		prevLocationsURL: null,
+		location: null,
 	}
 
 	return state

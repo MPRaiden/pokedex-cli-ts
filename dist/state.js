@@ -5,6 +5,7 @@ import { commandHelp } from "./command_help.js";
 import { PokeAPI } from "./pokeapi.js";
 import { commandMapB } from "./command_mapb.js";
 import { Cache } from "./pokecache.js";
+import { commandExplore } from "./command_explore.js";
 export function initState() {
     const readInput = createInterface({
         input: process.stdin,
@@ -32,6 +33,11 @@ export function initState() {
             description: "Displays previous locations results",
             callback: commandMapB,
         },
+        explore: {
+            name: "explore",
+            description: "Explores the pokemon of a location",
+            callback: commandExplore,
+        },
     };
     const cache = new Cache(10000);
     const state = {
@@ -39,7 +45,8 @@ export function initState() {
         commands: registry,
         pokeapi: new PokeAPI(cache),
         nextLocationsURL: "https://pokeapi.co/api/v2/location-area",
-        prevLocationsURL: null
+        prevLocationsURL: null,
+        location: null,
     };
     return state;
 }

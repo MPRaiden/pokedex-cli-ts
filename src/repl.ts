@@ -15,7 +15,7 @@ export async function startREPL(state: State) {
 			state.readline.prompt()
 		} else {
 			if (Object.keys(commands).includes(cleanedInput[0])) {
-				commands[cleanedInput[0]].callback(state)
+				commands[cleanedInput[0]].callback(state, ...cleanedInput.slice(1))
 			} else {
 				console.log("Unknown command\n")
 				state.readline.prompt()

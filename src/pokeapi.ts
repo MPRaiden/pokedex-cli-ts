@@ -22,7 +22,7 @@ export class PokeAPI {
 			const response = await fetch(url)
 
 			if (!response.ok) {
-				throw new Error(`function fetchLocations() response not ok, response.text - ${response}`)
+				throw new Error(`function fetchLocations() response not ok, response status code- ${response.status}`)
 			}
 
 			const data = await response.json()
@@ -50,7 +50,7 @@ export class PokeAPI {
 			const response = await fetch(url)
 
 			if (!response.ok) {
-				throw new Error(`function fetchLocation() response not ok, response.text - ${response}`)
+				throw new Error(`function fetchLocation() response not ok, response status code - ${response.status}`)
 			}
 
 			const data = await response.json()

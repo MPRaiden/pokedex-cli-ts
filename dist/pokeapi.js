@@ -15,7 +15,7 @@ export class PokeAPI {
             // If not send request and cache results
             const response = await fetch(url);
             if (!response.ok) {
-                throw new Error(`function fetchLocations() response not ok, response.text - ${response}`);
+                throw new Error(`function fetchLocations() response not ok, response status code- ${response.status}`);
             }
             const data = await response.json();
             // Add to cache
@@ -37,7 +37,7 @@ export class PokeAPI {
             // Else send request to API
             const response = await fetch(url);
             if (!response.ok) {
-                throw new Error(`function fetchLocation() response not ok, response.text - ${response}`);
+                throw new Error(`function fetchLocation() response not ok, response status code - ${response.status}`);
             }
             const data = await response.json();
             // Cache new results
