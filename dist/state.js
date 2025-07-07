@@ -6,6 +6,7 @@ import { PokeAPI } from "./pokeapi.js";
 import { commandMapB } from "./command_mapb.js";
 import { Cache } from "./pokecache.js";
 import { commandExplore } from "./command_explore.js";
+import { commandCatch } from "./command_catch.js";
 export function initState() {
     const readInput = createInterface({
         input: process.stdin,
@@ -38,6 +39,11 @@ export function initState() {
             description: "Explores the pokemon of a location",
             callback: commandExplore,
         },
+        catch: {
+            name: "catch",
+            description: "Attemps to catch a pokemon",
+            callback: commandCatch,
+        },
     };
     const cache = new Cache(10000);
     const state = {
@@ -47,6 +53,7 @@ export function initState() {
         nextLocationsURL: "https://pokeapi.co/api/v2/location-area",
         prevLocationsURL: null,
         location: null,
+        pokedex: {},
     };
     return state;
 }
