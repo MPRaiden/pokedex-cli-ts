@@ -7,6 +7,7 @@ import { commandMapB } from "./command_mapb.js";
 import { Cache } from "./pokecache.js";
 import { commandExplore } from "./command_explore.js";
 import { commandCatch } from "./command_catch.js";
+import { commandInspect } from "./command_inpect.js";
 export function initState() {
     const readInput = createInterface({
         input: process.stdin,
@@ -43,6 +44,11 @@ export function initState() {
             name: "catch",
             description: "Attemps to catch a pokemon",
             callback: commandCatch,
+        },
+        inspect: {
+            name: "inspect",
+            description: "Displays information about a pokemon",
+            callback: commandInspect,
         },
     };
     const cache = new Cache(10000);
